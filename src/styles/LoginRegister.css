@@ -1,0 +1,100 @@
+.loginRegisterBlock {
+    margin: 0px;
+}
+
+.loginRegisterToggle {
+    margin: 35px 0 0 0;
+    text-align: center;
+    display: flex;
+}
+
+.loginRegisterToggleButton {
+    font-size: 18px;
+    text-transform: uppercase;
+    padding: 15px 62px;
+    font-weight: 600;
+    width: 49%;
+    border-bottom: 2px solid #eee;
+}
+
+.loginRegisterToggleButton:hover {
+    color: var(--color-1);
+    cursor: pointer;
+}
+
+.loginActive .loginToggleButton,
+.registerActive .registerToggleButton {
+    color: var(--color-1);
+    background-color: #eee;
+}
+
+.loginRegisterForms {
+    margin: 40px 0;
+}
+
+.loginRegisterFormsNotification {
+    display: flex;
+    margin: 0 auto 10px;
+    justify-content: center;
+}
+
+.loginRegisterFormsNotificationtextWrapper {
+    background-color: #eee;
+    padding: 5px 10px 5px 20px;
+    display: flex;
+}
+
+.loginRegisterFormsNotificationHide {
+    display: none;
+}
+
+.loginRegisterFormsNotificationText {
+    color: var(--color-grey-dark);
+    margin-right: 20px;
+}
+
+.loginRegisterFormsNotificationClose {
+    position: relative;
+    display: flex;
+    align-items: center;
+    color: var(--color-1);
+}
+
+.loginRegisterFormsNotificationClose:before {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.loginRegisterForm {
+    display: none;
+}
+
+.loginActive .loginForm,
+.registerActive .registerForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginRegisterFormInputWrapper {
+    margin: 0 10px;
+    position: relative;
+}
+
+.loginRegisterFormInput {
+    padding: 15px 15px 15px 40px;
+    border: 2px solid #eee;
+    font-size: 14px;
+}
+
+.loginRegisterFormSubmit {
+    background-color: var(--color-1);
+    color: #fff;
+    padding: 15px 50px;
+    border: 2px solid var(--color-1);
+}
+
+.loginRegisterFormSubmit:hover {
+    background-color: var(--color-1-dark);
+    cursor: pointer;
+}

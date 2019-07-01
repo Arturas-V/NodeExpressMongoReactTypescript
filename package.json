@@ -51,6 +51,7 @@
     "@types/history": "^4.7.2",
     "@types/react-router": "^3.0.20",
     "awesome-typescript-loader": "^5.2.1",
+    "less-loader": "^5.0.0",
     "nodemon": "^1.18.9",
     "source-map-loader": "^0.2.4",
     "typescript": "^3.5.2",

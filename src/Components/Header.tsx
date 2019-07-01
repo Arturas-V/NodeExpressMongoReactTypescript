@@ -1,5 +1,10 @@
 import * as React from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
+
+
+// style imports
+import "../styles/Header.css";
+import logo from "../images/beeza.png";
 
 export default class Header extends React.Component<any, any> {
 
@@ -9,18 +14,21 @@ export default class Header extends React.Component<any, any> {
 	render() {		
 
 		return (
-			<div className="header">	
-				<h1>Beeza</h1>
+			<header className="mainHeader">
+				
+				<div className="mainHeaderLogoWrapper">
+					<Link className="mainHeaderLogo" to="/">
+						<img className="mainHeaderLogoImage" src={logo} alt="beeza" />
+					</Link>
+				</div>
+			
+				<div className="mainMenu">
+					<NavLink exact activeClassName="mainMenuItemActive" className="mainMenuItem" to="">Home</NavLink>
+					<NavLink exact activeClassName="mainMenuItemActive" className="mainMenuItem" to="/shops">Shops</NavLink>
+					<NavLink exact activeClassName="mainMenuItemActive" className="mainMenuItem" to="/account">Account</NavLink>
+				</div>
 
-					<div className="mainMenu">
-						<NavLink exact className="mainMenuItem" to="">Home</NavLink>
-						<NavLink exact className="mainMenuItem" to="/shops">Shops</NavLink>
-						<NavLink exact className="mainMenuItem" to="/account">Account</NavLink>
-						<NavLink exact className="mainMenuItem" to="/account/register">Register</NavLink>
-						<NavLink exact className="mainMenuItem" to="/account/login">Login</NavLink>
-					</div>
-
-			</div>
+			</header>
 		)
 	}
 }

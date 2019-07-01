@@ -1,0 +1,67 @@
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p,
+a, img, u, ol, ul, li, form, label,
+table, caption, tbody, tr, th, td,
+article, aside, canvas, details, embed, footer, header, hgroup, 
+menu, nav, section, summary, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+    vertical-align: baseline;
+    font-family: 'Source Code Pro', monospace;
+	-webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    color: #484848;
+}
+
+:root {
+    --color-1: #ff7317;
+    --color-1-dark: #dc5d0a;
+    --color-grey-dark: #484848;
+  }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+h1 {font-size: 44px;}
+h2 {font-size: 36px;}
+h3 {font-size: 28px;}
+h4 {font-size: 22px;}
+h5 {font-size: 18px;}
+
+ul {
+    list-style-type: none;
+}
+
+img {
+	border: 0;
+}
+
+p {
+    color: #818080;
+    line-height: 32px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--color-1);
+}
+
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="tel"],
+input[type="email"],
+input[type="button"],
+input[type="submit"] {
+    -webkit-appearance: none;
+    border-radius: 0;
+}

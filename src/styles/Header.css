@@ -1,0 +1,29 @@
+.mainHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mainHeaderLogoWrapper {
+
+}
+
+.mainHeaderLogo {
+
+}
+
+.mainHeaderLogoImage {
+    height: 60px;
+}
+
+.mainMenu {
+
+}
+
+.mainMenuItem {
+    margin-left: 35px;
+}
+
+.mainMenuItemActive {
+    color: var(--color-1);
+}

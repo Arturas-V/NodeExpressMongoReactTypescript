@@ -12,39 +12,43 @@ router.post('/loginUser', function(req, res) {
     } = body;
 
     if(!username) {
-        return res.status(200).send('Error: User name can not be empty');
+        return res.status(200).json({msg: 'Username can not be empty'});
     }
 
     if(!password) {
-        return res.status(200).send('Error: Password name can not be empty');
+        return res.status(200).json({msg: 'Please enter password'});
     }
 
     
     User.findOne({ username: username }).exec( (err, user) => {    
                 
         if(err) {
-            return res.status(500).send('Error: Server error');
+            return res.status(500).json({msg: 'Error: Server error, try again later'});
         }
 
         if(!user) {
-            return res.status(200).send('No user with this username');
+            return res.status(200).json({msg: 'No user with this username'});
         }
 
         if(!user.validatePassword(password)) {
-            return res.status(200).send('Incorrect Password');
+            return res.status(200).json({msg: 'Incorrect Password'});
         }
 
         const userSession = new UserSession();
 
         userSession.userId = user._id;
         userSession.save((err, doc) =>  {
-            console.log("Seesionerr ", err);
+
             if(err) {
-                return res.status(500).send('Error: Server error');
+                return res.status(500).json({msg: 'Error: Server error, try again later'});
             }
-            return res.status(200).send({
-                message:'Logged in',
-                success: true,
+
+            // user session cookie nam dollar just for fun :)
+            res.cookie("dollar", doc._id + "", 9999);            
+
+            return res.status(200).json({
+                msg:'Logged in',
+                logggedIn: true,
                 token: doc._id
             });
         });

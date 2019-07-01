@@ -1,88 +1,70 @@
 import * as React from "react";
+import LoginRegister from "./LoginRegister";
 
-export default class Account extends React.Component {
+//style imports
+import "../../styles/Account.css"
+
+type State = {
+	isLoggedIn: number
+}
+
+export default class Account extends React.Component<State> {
+
+	state = {
+		isLoggedIn: 0
+	}
 
 	/*
-	 * Handle login/register fetch requests to server 
+	 *  constructor with fetch call to server to get user details
 	 */
-	_fetchFormdata = (url: string = "", data: object = {}) => {
+	constructor(props: any){
+		super(props);
 
-		fetch(url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-            })
+		fetch("/account/getUser", { method: 'GET' })
             .then(res => res.json())
+            .then((obj) => {
+
+                if( typeof obj.loggedIn !== "undefined" && obj.loggedIn ) {
+					this.setState({
+						isLoggedIn: 1
+					});
+                } else {
+					this._showLoginRegisterOption();
+				}
+                
+            })
 			.catch(error => console.error(error));
-			
+
 	}
 
 	/*
-	 * Login/Register form submit handler
+	 *  show login register option by updating state
 	 */
-	_formSubmitHandle = (event: React.FormEvent) => {
-		event.preventDefault();
-
-		const form: any = event.target;
-		const data = new FormData(form);
-		let userdata: any = {};
-
-		for (let name of data.keys()) {
-			userdata[name] = data.get(name);
-		}
-
-		this._fetchFormdata(form.action, userdata);
+	_showLoginRegisterOption = () => {
+		this.setState({
+			isLoggedIn: 2
+		});
 	}
 
-	/*
-	 * Toggle login or register form button handler
-	 */
-	_toggleLoginRegister = (event: React.MouseEvent) => {
-
-	}
 
 	/*
 	 *  Render jumbo bumbo
 	 */
 	render() {
-	  	return (
-			<div className="loginRegisterBlock">
 
-				<h2 className="loginRegisterBlockTitle">Account Login/Register</h2>
-
-				<p className="loginRegisterBlockCaption">Login or register new account here</p>
-
-				<div className="loginRegisterToggle">
-					<span onClick={this._toggleLoginRegister} className="loginRegisterToggleButton loginRegisterToggleButtonActive">Login</span>
-					<span onClick={this._toggleLoginRegister} className="loginRegisterToggleButton">Register</span>
-				</div>
-				
-				<div className="loginRegisterForms">
-
-					<form className="loginRegisterFormLogin loginRegisterFormActive" action="/account/loginUser" onSubmit={this._formSubmitHandle}>
-
-						<input type="text" data-parse="username" placeholder="Username" name="username" />
-						<input type="password" data-parse="password" placeholder="Password" name="password" />
-						<input type="submit" value="Login" />
-
-					</form>
-
-					<form className="loginRegisterFormRegister loginRegisterFormHidden" action="/account/registerUser" onSubmit={this._formSubmitHandle}>
-
-						<input type="text" placeholder="Username" name="username" />
-						<input type="email" placeholder="Email" name="email" />
-						<input type="password" placeholder="Password" name="password" />
-						<input type="submit" value="Register" />
-
-					</form>
-
-				</div>
-
-			</div>
-
-	  	)
+		if(this.state.isLoggedIn === 1 ) {
+			return (
+				<h1>Welcome to your account</h1>	
+			)
+		} else if (this.state.isLoggedIn === 2) {
+			return (
+				<LoginRegister accountLoggedInState={this._showLoginRegisterOption} />
+			)
+		} else if (this.state.isLoggedIn === 0) {
+			return (
+				<p>Wait</p>
+			)
+		}
+	  	
 	}
 }

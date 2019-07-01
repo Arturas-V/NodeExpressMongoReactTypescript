@@ -1,0 +1,29 @@
+:before {
+    font-family: 'IcoFont' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+}
+
+.userIC:before { content: "\ed05"; }
+.passwordIC:before { content: "\ec71"; }
+.emailIC:before { content: "\ef12"; }
+.closeIC:before { content: "\eee1"; }
+
+.passwordIC:before,
+.userIC:before,
+.emailIC:before {
+    position: absolute;
+    top: 18px;
+    left: 12px;
+    font-size: 16px;
+}
