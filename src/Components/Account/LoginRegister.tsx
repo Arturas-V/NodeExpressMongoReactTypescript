@@ -3,7 +3,7 @@ import * as React from "react";
 // style imports
 import "../../styles/Account/LoginRegister.css"
 
-type State = { activeLoginOption: boolean, showNotification: boolean, hideForms: boolean, notificationMessage: string }
+type State = { activeLoginOption: Boolean, showNotification: Boolean, hideForms: Boolean, notificationMessage: String }
 type Props = { updateStateAfterLoggedIn: Function }
 
 export default class LoginRegister extends React.Component<Props, State> {

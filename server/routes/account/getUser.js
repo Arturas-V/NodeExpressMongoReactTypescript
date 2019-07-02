@@ -5,18 +5,18 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 router.get('/getUser', function(req, res) {
-console.log("one");
+
     const sessionCookie = req.cookies["dollar"];
-    console.log("one2", sessionCookie);
+
     // send response of not logged in user
     if(!sessionCookie || sessionCookie === "0") {
         return res.status(200).json({
             loggedIn: false
         });
     }
-    console.log("one3");
+
     const _id = mongoose.Types.ObjectId(sessionCookie);
-    console.log("one4");
+
     UserSession.findOne().and([{ _id: _id }, { isDeleted: false }]).exec( (err, session) => {  
         
         if(err) {

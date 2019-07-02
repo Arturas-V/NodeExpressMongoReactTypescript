@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 import "../../styles/Account/Account.css"
 
 type State = {
-	isLoggedIn: number,
-	user: {}
+	isLoggedIn: Number,
+	user: Object
 }
 
 export default class Account extends React.Component<State> {
