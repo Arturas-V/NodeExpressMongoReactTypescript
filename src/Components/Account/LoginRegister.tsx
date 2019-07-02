@@ -1,10 +1,10 @@
 import * as React from "react";
 
 // style imports
-import "../../styles/LoginRegister.css"
+import "../../styles/Account/LoginRegister.css"
 
 type State = { activeLoginOption: boolean, showNotification: boolean, hideForms: boolean, notificationMessage: string }
-type Props = { accountLoggedInState: Function }
+type Props = { updateStateAfterLoggedIn: Function }
 
 export default class LoginRegister extends React.Component<Props, State> {
 
@@ -39,11 +39,11 @@ export default class LoginRegister extends React.Component<Props, State> {
 
                     loginFormElem.remove();
                     registerFormElem.remove();
-
-                    this.props.accountLoggedInState();
+                    
+                    return this.props.updateStateAfterLoggedIn();
+                    
                 }
                 
-
                 this._showNotification(obj.msg);
                 
             })
@@ -123,7 +123,7 @@ export default class LoginRegister extends React.Component<Props, State> {
 	 * update state to set correct style class
 	 */
 	_toggleLoginRegister = (event: any) => {
-        const activeLogin = (event.target.dataset.activeOption  == "true");
+        const activeLogin = (event.target.dataset.activeOption === "true");
 
         this.setState({
             activeLoginOption: activeLogin,

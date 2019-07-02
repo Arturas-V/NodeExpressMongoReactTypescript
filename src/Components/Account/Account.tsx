@@ -1,17 +1,27 @@
 import * as React from "react";
 import LoginRegister from "./LoginRegister";
+import UserArea from "./UserArea";
+import { Link } from "react-router-dom";
 
 //style imports
-import "../../styles/Account.css"
+import "../../styles/Account/Account.css"
 
 type State = {
-	isLoggedIn: number
+	isLoggedIn: number,
+	user: {}
 }
 
 export default class Account extends React.Component<State> {
 
 	state = {
-		isLoggedIn: 0
+		isLoggedIn: 0, // 1 - go to user are when logged in; 2 - show login/register;
+		user: {
+			email: "",
+			id: "",
+			username: "",
+			name: "",
+        	location: ""
+		}
 	}
 
 	/*
@@ -26,9 +36,14 @@ export default class Account extends React.Component<State> {
 
                 if( typeof obj.loggedIn !== "undefined" && obj.loggedIn ) {
 					this.setState({
-						isLoggedIn: 1
+						isLoggedIn: 1,
+						user: obj
 					});
-                } else {
+                } else if (typeof obj.loggedIn !== "undefined" && !obj.loggedIn ){
+					this.setState({
+						isLoggedIn: 2
+					});
+				} else {
 					this._showLoginRegisterOption();
 				}
                 
@@ -46,6 +61,21 @@ export default class Account extends React.Component<State> {
 		});
 	}
 
+	/*
+	 *  redirect after logged in
+	 */
+	_loggedInStateUpdate = () => {
+		this.setState({
+			isLoggedIn: 1
+		});
+	}
+
+	_loggedOutHandler = () => {
+		this.setState({
+			isLoggedIn: 2
+		});
+	}
+
 
 	/*
 	 *  Render jumbo bumbo
@@ -54,15 +84,19 @@ export default class Account extends React.Component<State> {
 
 		if(this.state.isLoggedIn === 1 ) {
 			return (
-				<h1>Welcome to your account</h1>	
+				<UserArea userData={this.state.user} logOutHandler={this._loggedOutHandler} />	
 			)
 		} else if (this.state.isLoggedIn === 2) {
 			return (
-				<LoginRegister accountLoggedInState={this._showLoginRegisterOption} />
+				<LoginRegister updateStateAfterLoggedIn={this._loggedInStateUpdate} />
 			)
 		} else if (this.state.isLoggedIn === 0) {
 			return (
-				<p>Wait</p>
+				<Link to="/">Back to homepage</Link>
+			)
+		} else {
+			return (
+				<Link to="/">Back to homepage</Link>
 			)
 		}
 	  	

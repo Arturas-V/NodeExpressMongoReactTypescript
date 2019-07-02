@@ -14,9 +14,13 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
-    isDeleted: {
-        tpe: Boolean,
-        default: false
+    name: {
+        type: String,
+        default: ""
+    },
+    location: {
+        type: String,
+        default: ""
     }
 });
 

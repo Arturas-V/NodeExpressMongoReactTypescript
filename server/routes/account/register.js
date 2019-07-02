@@ -47,6 +47,8 @@ router.post('/registerUser', function(req, res) {
         newUser.username = username;
         newUser.password = newUser.generateHash(password);
         newUser.email = email;
+        newUser.name = "";
+        newUser.location = "";
         newUser.save((err, user) => {
             if(err) {
                 return res.status(500).json({msg: 'Error: Server error, try again later'});

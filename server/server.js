@@ -14,7 +14,6 @@ const app = express();
 const registerRoute = require('./routes/account/register');
 const loginRoute = require('./routes/account/login');
 const getUserRoute = require('./routes/account/getUser');
-const verifyRoute = require('./routes/account/verify');
 const logoutRoute = require('./routes/account/logout');
 app.use(cookieParser());
 
@@ -27,7 +26,7 @@ mongoose.connect('mongodb://localhost:27017/weezadb', {useNewUrlParser: true})
 
 
 // sub routes
-app.use('/account', [registerRoute, loginRoute, getUserRoute, verifyRoute, logoutRoute]);
+app.use('/account', [registerRoute, loginRoute, getUserRoute, logoutRoute]);
 
 app.listen(3001, function () {
     console.log('Example app listening on port 3001!');

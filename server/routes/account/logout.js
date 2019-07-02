@@ -1,39 +1,30 @@
 const UserSession = require('../../models/UserSession');
 const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose");
 
-router.get('/logout', function(req, res) {
+router.post('/logout', function(req, res) {
 
-    const { query } = req;
-    const { token } = query;
+    const sessionCookie = req.cookies["dollar"];
+    const _id = mongoose.Types.ObjectId(sessionCookie);
 
-    UserSession.findOne().and([{ _id: token }, { isDeleted: false }]).exec( (err, session) => {
+    UserSession.update({ _id: _id}, { 
+        isDeleted: true
+    }, (err, session) => {  
 
         if(err) {
             return res.status(500).send('Error: Server error');
         }
 
         if(!session) {
-            return res.status(200).send('You were never logged in, wtf??');
+            return res.status(200).send('Already logged out long time ago');
         }
 
         if(session) {
-            UserSession.update({ _id: token}, { 
-                isDeleted: true
-            }, (err, session) => {  
-                        
-                if(err) {
-                    return res.status(500).send('Error: Server error');
-                }
-        
-                if(!session) {
-                    return res.status(200).send('Already logged out long time ago');
-                }
-        
-                if(session) {
-                    return res.status(200).send('Logged out');
-                }
-        
+            res.cookie("dollar", "0", 9999); 
+            return res.status(200).json({
+                msg: 'Logged out',
+                loggedOut: true
             });
         }
 
