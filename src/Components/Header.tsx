@@ -6,7 +6,7 @@ import { NavLink, Link } from "react-router-dom";
 import "../styles/Header.css";
 import logo from "../images/beeza.png";
 
-export default class Header extends React.Component<any, any> {
+export default class Header extends React.Component {
 
 	/*
 	 *  render DOM

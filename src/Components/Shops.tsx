@@ -3,7 +3,7 @@ import * as React from "react";
 // import { Route, BrowserRouter as Router, Link } from 'react-router-dom';
 
 
-export default class Shops extends React.Component<any, any> {
+export default class Shops extends React.Component {
 	render() {
 	  return (
 		<div>

@@ -8,7 +8,7 @@ router.post('/logout', function(req, res) {
     const sessionCookie = req.cookies["dollar"];
     const _id = mongoose.Types.ObjectId(sessionCookie);
 
-    UserSession.update({ _id: _id}, { 
+    UserSession.updateOne({ _id: _id}, { 
         isDeleted: true
     }, (err, session) => {  
 
