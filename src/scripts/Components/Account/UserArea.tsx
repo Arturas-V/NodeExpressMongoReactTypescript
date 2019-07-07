@@ -1,37 +1,17 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 type Props = {
     userData: {
-        email: String,
-        id: String,
-        username: String,
-        name: String,
-        location: String
-    },
-    logOutHandler: Function
+        email: string,
+        id: string,
+        username: string,
+        name: string,
+        location: string
+    }
 }
 
-export default class Account extends React.Component<Props> {
-
-    _logOut = () => {
-
-        fetch("/account/logout", { 
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({msg: "logout"})
-            })
-            .then(res => res.json())
-            .then((obj) => {
-
-                return this.props.logOutHandler();
-                
-            })
-			.catch(error => console.error(error));
-    }
+export default class UserArea extends React.Component<Props> {
 
     render() {
 
@@ -41,7 +21,8 @@ export default class Account extends React.Component<Props> {
 
                 <h2>Welcome to your account</h2>
 
-                <span onClick={this._logOut} >Logout</span>
+                <NavLink exact className="accountPostAdButton" to="/account/my-ads">My ads</NavLink>
+                <NavLink exact className="accountPostAdButton" to="/account/post-ad">Post ad</NavLink>
 
                 <div className="accountDetails">
 
@@ -65,12 +46,15 @@ export default class Account extends React.Component<Props> {
                         : <input type="text" placeholder="enter your location" />
                     }
 
-                    <Link className="accountPostAdButton" to="/account/post-ad">Post ad</Link>
+                </div>
+
+                <div className="accountAds">
+
+                    <h4>All your ads</h4>
 
                 </div>
 
             </div>
-            
             
         )
 

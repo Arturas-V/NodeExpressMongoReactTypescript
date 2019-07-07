@@ -1,10 +1,13 @@
 import * as React from "react";
+import Events from "../../Utils/Events";
+import EventType from "../../Utils/EventType";
 
 // style imports
-import "../../styles/Account/LoginRegister.css"
+import "./../../../styles/Account/LoginRegister.css"
 
 type State = { activeLoginOption: Boolean, showNotification: Boolean, hideForms: Boolean, notificationMessage: String }
 type Props = { updateStateAfterLoggedIn: Function }
+
 
 export default class LoginRegister extends React.Component<Props, State> {
 
@@ -39,6 +42,12 @@ export default class LoginRegister extends React.Component<Props, State> {
 
                     loginFormElem.remove();
                     registerFormElem.remove();
+
+                    // const event: Event = {
+                    //     type: EventType.LOG_IN
+                    // }
+
+                    Events.dispatch(EventType.LOG_IN);
                     
                     return this.props.updateStateAfterLoggedIn();
                     

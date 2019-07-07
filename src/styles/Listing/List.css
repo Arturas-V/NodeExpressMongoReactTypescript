@@ -1,0 +1,26 @@
+.listItems {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.listItem {
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 24%;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.listItemTitle {
+
+}
+
+.listItemPrice {
+
+}
+
+.listItemDescrition {
+
+}

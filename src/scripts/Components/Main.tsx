@@ -8,8 +8,7 @@ import PostAd from './Account/PostAd';
 
 
 // style imports
-import "../styles/Main.css";
-
+import "../../styles/Main.css";
 
 export default class Main extends React.Component {
 

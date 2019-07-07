@@ -1,0 +1,46 @@
+.postAdPage {
+
+}
+
+.postAdPageNotification {
+    display: none;
+}
+
+.postAdPageNotificationActive.postAdPageNotification {
+    display: flex;
+}
+
+.postAdForm {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.postAdFormLine {
+    margin-bottom: 20px;
+    max-width: 350px;
+    width: 100%;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.postAdFormLineLabel {
+    margin-right: 6px;
+}
+
+.postAdFormLineField {
+    width: 100%;
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+.postAdFormLineSubmit {
+    background-color: var(--color-1);
+    color: #fff;
+    border: 0;
+    padding: 13px 35px;
+    font-size: 16px;
+    cursor: pointer;
+}

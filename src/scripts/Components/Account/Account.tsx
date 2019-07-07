@@ -3,18 +3,20 @@ import LoginRegister from "./LoginRegister";
 import UserArea from "./UserArea";
 import { Link } from "react-router-dom";
 
+
 //style imports
-import "../../styles/Account/Account.css"
+import "./../../../styles/Account/Account.css"
 
 type State = {
-	isLoggedIn: Number,
-	user: Object
+	isLoggedIn: number,
+	user: object
 }
+
 
 export default class Account extends React.Component<State> {
 
 	state = {
-		isLoggedIn: 0, // 1 - go to user are when logged in; 2 - show login/register;
+		isLoggedIn: 0, // 1 - go to user area when logged in; 2 - show login/register;
 		user: {
 			email: "",
 			id: "",
@@ -23,6 +25,8 @@ export default class Account extends React.Component<State> {
         	location: ""
 		}
 	}
+
+	
 
 	/*
 	 *  constructor with fetch call to server to get user details
@@ -40,6 +44,7 @@ export default class Account extends React.Component<State> {
 						user: obj
 					});
                 } else if (typeof obj.loggedIn !== "undefined" && !obj.loggedIn ){
+					
 					this.setState({
 						isLoggedIn: 2
 					});
@@ -84,15 +89,11 @@ export default class Account extends React.Component<State> {
 
 		if(this.state.isLoggedIn === 1 ) {
 			return (
-				<UserArea userData={this.state.user} logOutHandler={this._loggedOutHandler} />	
+				<UserArea userData={this.state.user} />	
 			)
 		} else if (this.state.isLoggedIn === 2) {
 			return (
 				<LoginRegister updateStateAfterLoggedIn={this._loggedInStateUpdate} />
-			)
-		} else if (this.state.isLoggedIn === 0) {
-			return (
-				<Link to="/">Back to homepage</Link>
 			)
 		} else {
 			return (

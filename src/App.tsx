@@ -1,12 +1,10 @@
 import * as React from "react";
-// import { Provider } from "react-redux";
 
 // Components
-import Header from "./Components/Header";
-import Main from "./Components/Main";
-import Footer from "./Components/Footer";
+import Header from "./scripts/Components/Header";
+import Main from "./scripts/Components/Main";
+import Footer from "./scripts/Components/Footer";
 import { BrowserRouter } from "react-router-dom";
-// import store from './store'
 
 
 //style imports
@@ -28,5 +26,4 @@ export default class App extends React.Component {
             </React.Fragment>
 		)		
 	}
-
 }
