@@ -1,7 +1,7 @@
 export default class Delegate {
 
-    constructor(listener: Function, scope: object){
-        return function() { 
+    constructor(listener: any, scope: object){
+        return () => { 
             listener.apply(null, [arguments, scope]);	
         }
     }

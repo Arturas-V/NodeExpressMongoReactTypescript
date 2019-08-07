@@ -1,105 +1,108 @@
 import * as React from "react";
+import { Redirect } from "react-router-dom";
+import Events from "../../Events/Events";
+import EventType from "../../Events/EventType";
+import Delegate from "../../Utils/Delegate";
 import LoginRegister from "./LoginRegister";
-import UserArea from "./UserArea";
-import { Link } from "react-router-dom";
 
 
-//style imports
+// style imports
 import "./../../../styles/Account/Account.css"
 
-type State = {
+interface IState {
 	isLoggedIn: number,
 	user: object
 }
 
+export default class Account extends React.Component<{}, IState> {
 
-export default class Account extends React.Component<State> {
-
-	state = {
-		isLoggedIn: 0, // 1 - go to user area when logged in; 2 - show login/register;
-		user: {
-			email: "",
-			id: "",
-			username: "",
-			name: "",
-        	location: ""
-		}
+	public state = {
+		isLoggedIn: 2, // 1 - go to user area when logged in; 2 - show login/register;
+		user: {}
 	}
 
-	
+	private showLogOutLinkDelegate = {};
 
 	/*
 	 *  constructor with fetch call to server to get user details
 	 */
 	constructor(props: any){
 		super(props);
+		const self = this;
 
-		fetch("/account/getUser", { method: 'GET' })
-            .then(res => res.json())
-            .then((obj) => {
+		this.showLogOutLinkDelegate = new Delegate(self.loggedInStateUpdate, self);
+		Events.addEventListener(EventType.LOG_IN, self.showLogOutLinkDelegate);
 
-                if( typeof obj.loggedIn !== "undefined" && obj.loggedIn ) {
-					this.setState({
-						isLoggedIn: 1,
-						user: obj
-					});
-                } else if (typeof obj.loggedIn !== "undefined" && !obj.loggedIn ){
-					
-					this.setState({
-						isLoggedIn: 2
-					});
-				} else {
-					this._showLoginRegisterOption();
-				}
-                
-            })
-			.catch(error => console.error(error));
+		this.requestUserData();
+	}
 
+		/*
+	 *  Render jumbo bumbo
+	 */
+	public render() {
+
+		let cont = <LoginRegister  />;
+
+		// redirect after log in
+		if(this.state.isLoggedIn === 1 ) {
+			cont = <Redirect to="/account/profile"/>;
+		}
+
+		return (
+			<React.Fragment>
+				{cont}
+			</ React.Fragment>
+		)
+	  	
 	}
 
 	/*
-	 *  show login register option by updating state
-	 */
-	_showLoginRegisterOption = () => {
-		this.setState({
-			isLoggedIn: 2
-		});
+	 * clean up component
+	 */ 
+	public componentWillUnmount () {
+		const self = this;
+
+		Events.removeEventListener(EventType.LOG_IN, self.showLogOutLinkDelegate);
+	}
+
+	/*
+	 * get user data
+	 */ 
+	private requestUserData = () => {
+
+		fetch("/account/getUser", { method: 'GET' })
+		.then(res => res.json())
+		.then((obj) => {
+
+			if( typeof obj.loggedIn !== "undefined" && obj.loggedIn ) {
+				this.setState({
+					isLoggedIn: 1,
+					user: obj
+				});
+			} else {
+				
+				this.setState({
+					isLoggedIn: 2
+				});
+			}
+			
+		})
+		.catch(error => console.error(error));
+
 	}
 
 	/*
 	 *  redirect after logged in
 	 */
-	_loggedInStateUpdate = () => {
-		this.setState({
-			isLoggedIn: 1
-		});
-	}
+	private loggedInStateUpdate = (options: any) => {
 
-	_loggedOutHandler = () => {
-		this.setState({
-			isLoggedIn: 2
-		});
-	}
-
-
-	/*
-	 *  Render jumbo bumbo
-	 */
-	render() {
-
-		if(this.state.isLoggedIn === 1 ) {
-			return (
-				<UserArea userData={this.state.user} />	
-			)
-		} else if (this.state.isLoggedIn === 2) {
-			return (
-				<LoginRegister updateStateAfterLoggedIn={this._loggedInStateUpdate} />
-			)
-		} else {
-			return (
-				<Link to="/">Back to homepage</Link>
-			)
+		// this._requestUserData();
+		
+		if ( typeof(options) !== undefined && options.length > 0 &&  options[0].data.loggedIn ) {
+			this.setState({
+				isLoggedIn: 1
+			});
 		}
-	  	
+		
 	}
 }

@@ -1,6 +1,6 @@
 export default class Cookies  {
 
-    static setCookie = (cname: string, cvalue: string, exdays: number) => {
+    public static setCookie = (cname: string, cvalue: string, exdays: number) => {
         const d = new Date();
         d.setTime(d.getTime() + (exdays*24*60*60*1000));
 
@@ -8,11 +8,11 @@ export default class Cookies  {
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
     
-    static getCookieValue = (cname: string) => { 
+    public static getCookieValue = (cname: string) => { 
         const name = cname + "=";
         const ca = document.cookie.split(';');
-        for(let i = 0; i < ca.length; i++) {
-            let c = ca[i];
+        for(const caItem of ca) {
+            let c = caItem;
             while (c.charAt(0) === ' ') {
                 c = c.substring(1);
             }

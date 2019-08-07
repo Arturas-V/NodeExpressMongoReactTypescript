@@ -1,74 +1,119 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import Cookies from "../../Utils/Cookies";
+import Navigation from "./Components/Navigation";
 
-//style imports
+// style imports
 import "./../../../styles/Account/PostAd.css"
 
-type State = {
-    loggedIn: boolean,
-    showNotification: boolean,
-    notificationMessage: string
+interface IState {
+    notificationMessage: string,
+    showNotification: boolean
 }
 
-export default class PostAd extends React.Component<State> {
+export default class PostAd extends React.Component<{}, IState> {
 
-    state = {
-        loggedIn: false,
-        showNotification: false,
-        notificationMessage: ""
+    public state = {
+        notificationMessage: "",
+        showNotification: false
     };
 
+    private cookie = "";
 
-	/*
-	 *  constructor with fetch call to server to get user details
+    constructor(props: object) {
+        super(props);
+
+        this.cookie = Cookies.getCookieValue("dollar");
+    }
+
+    /*
+	 *  Render jumbo bumbo
 	 */
-	constructor(props: any){
-		super(props);
+	public render() {
 
-		fetch("/account/getUser", { method: 'GET' })
-            .then(res => res.json())
-            .then((obj) => {
+        if(this.cookie === "0" || this.cookie === "") {
+            return (
+                <div className="accountPage">
 
-                if( typeof obj.loggedIn !== "undefined" && obj.loggedIn ) {
-                    return this.setState({
-                        loggedIn: true
-                    });
-                } else {
-                    return;
-                }
-                
-            })
-			.catch(error => console.error(error));
+                    <p>Nothing here</p>
+
+                </div>
+            )
+        }
+
+        return (
+            <div className="postAdPage">
+
+                <h2>Post new ad here</h2>
+
+                <Navigation/>
+
+                <div className={this.state.showNotification ? "postAdPageNotification postAdPageNotificationActive" : "postAdPageNotification"}>
+                    <p className="postAdPageNotificationText">{this.state.notificationMessage}</p>
+                    <span className="postAdPageNotificationClose closeIC" onClick={this.hideNotification}>&nbsp;</span>
+                </div>
+
+                <form className="postAdForm" onSubmit={this.postAd}>
+
+                    <div className="postAdFormLine">
+                        <div className="postAdFormSubLine">
+                            <label className="postAdFormLineLabel" htmlFor="live">Live</label>
+                            <input type="radio" defaultChecked={true} name="live" id="live" value="true" onFocus={this.hideNotification}/>
+                        </div>
+                        
+                        <div className="postAdFormSubLine">
+                            <label className="postAdFormLineLabel" htmlFor="no-live">Not live</label>
+                            <input type="radio" name="live" id="no-live" value="false" onFocus={this.hideNotification}/>
+                        </div>
+                        
+                    </div>
+
+                    <div className="postAdFormLine">
+                        <input className="postAdFormLineField" type="text" required={true} name="title" placeholder="Ad title" onFocus={this.hideNotification}/>
+                    </div>
+
+                    <div className="postAdFormLine">
+                        <input className="postAdFormLineField" type="number" required={true} name="price" placeholder="Price" onFocus={this.hideNotification}/>
+                    </div>
+                    
+                    <div className="postAdFormLine">
+                        <textarea className="postAdFormLineField" required={true} placeholder="Description" rows={8} name="description" onFocus={this.hideNotification}/>
+                    </div>
+                    
+                    <div className="postAdFormLine">
+                        <input className="postAdFormLineSubmit" type="stubmit" value="Post ad" />
+                    </div>
+
+                </form>
+
+            </div>
+        )
 
 	}
 
-    _postAd = (event: React.FormEvent) => {
+    private postAd = (event: React.FormEvent) => {
         event.preventDefault();
 
         const form: any = event.target;
 		const data = new FormData(form);
-		let postdata: any = {};
+		const postdata: any = {};
 
-		for (let name of data.keys()) {
+		for (const name of data.keys()) {
 			postdata[name] = data.get(name);
         }
         
         fetch("/ad/post", {
-            method: 'POST',
+            body: JSON.stringify(postdata),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(postdata)
+            method: 'POST'
             })
             .then(res => res.json())
             .then((obj) => {
-                console.log("eeeee", obj);
                 if( (typeof obj.adPosted !== "undefined" && obj.adPosted) ) {
-                    console.log("zooo");
                     form.reset();
-                    console.log("mee");
-                    this._showNotification(obj.msg);
+                    this.showNotification(obj.msg);
                                         
                 } else {
                     return;
@@ -78,83 +123,20 @@ export default class PostAd extends React.Component<State> {
 			.catch(error => console.error(error));
     }
 
-    _showNotification = (message: string) => {
-        console.log("baaa");
+    private showNotification = (message: string) => {
         this.setState({
             notificationMessage: message,
             showNotification: true
         });
     }
 
-    _hideNotification = () => {
+    private hideNotification = () => {
         if(this.state.showNotification) {
             this.setState({
-                showNotification: false,
-                notificationMessage: ""
+                notificationMessage: "",
+                showNotification: false
             });
         }
     }
-
-
-	/*
-	 *  Render jumbo bumbo
-	 */
-	render() {
-
-        if(this.state.loggedIn) {
-            return (
-                <div className="postAdPage">
-    
-                    <p>Post new ad here</p>
-
-                    <div className={this.state.showNotification ? "postAdPageNotification postAdPageNotificationActive" : "postAdPageNotification"}>
-                        <p className="postAdPageNotificationText">{this.state.notificationMessage}</p>
-                        <span className="postAdPageNotificationClose closeIC" onClick={this._hideNotification}></span>
-                    </div>
-    
-                    <form className="postAdForm" onSubmit={this._postAd}>
-    
-                        <div className="postAdFormLine">
-                            <div className="postAdFormSubLine">
-                                <label className="postAdFormLineLabel" htmlFor="live">Live</label>
-                                <input type="radio" defaultChecked name="live" id="live" value="true" onFocus={this._hideNotification}/>
-                            </div>
-                            
-                            <div className="postAdFormSubLine">
-                                <label className="postAdFormLineLabel" htmlFor="no-live">Not live</label>
-                                <input type="radio" name="live" id="no-live" value="false" onFocus={this._hideNotification}/>
-                            </div>
-                            
-                        </div>
-    
-                        <div className="postAdFormLine">
-                            <input className="postAdFormLineField" type="text" required name="title" placeholder="Ad title" onFocus={this._hideNotification}/>
-                        </div>
-
-                        <div className="postAdFormLine">
-                            <input className="postAdFormLineField" type="number" required name="price" placeholder="Price" onFocus={this._hideNotification}/>
-                        </div>
-                        
-                        <div className="postAdFormLine">
-                            <textarea className="postAdFormLineField" required placeholder="Description" rows={8} name="description" onFocus={this._hideNotification}></textarea>
-                        </div>
-                        
-                        <div className="postAdFormLine">
-                            <input className="postAdFormLineSubmit" type="submit" value="Post ad" />
-                        </div>
-    
-                    </form>
-    
-                </div>
-            )
-        } else {
-            return (
-                <p>You have no permision to post ad. Please <Link to="/account">login or register</Link></p>
-            )
-            
-        }
-
-        
-	  	
-	}
+	
 }

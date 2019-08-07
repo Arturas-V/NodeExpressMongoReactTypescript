@@ -1,82 +1,47 @@
-import * as React from "react";
-import { NavLink, Link } from "react-router-dom";
+import React from "react";
+import { Link, NavLink } from "react-router-dom";
+import Events from "../Events/Events";
+import EventType from "../Events/EventType";
 import Cookies from "../Utils/Cookies";
-import Events from "../Utils/Events";
 import Delegate from "../Utils/Delegate";
 
-
-// style imports
-import "../../styles/Header.css";
+// style statics
 import logo from "../../images/beeza.png";
+import "../../styles/Header.css";
 
-type IHeader = {
-	showLogOutLinkDelegate: object
+interface IState {
+	isLoggedIn: boolean
 }
 
-export default class Header extends React.Component implements IHeader {
+export default class Header extends React.Component<{}, IState> {
 
-	state = {
+	public state = {
 		isLoggedIn: false
 	}
 
-	showLogOutLinkDelegate = {};
+	private showLogOutLinkDelegate = {};
 
 	constructor(props: object){
 		super(props);
-		const _this = this;
+		const self = this;
 
-		this.showLogOutLinkDelegate = new Delegate(_this._showLogOutLink, _this);
-	}
+		this.showLogOutLinkDelegate = new Delegate(self.showLogOutLink, self);		
+		Events.addEventListener(EventType.LOG_IN, self.showLogOutLinkDelegate);
 
-	componentWillMount (){
-		const isCookie = Cookies.getCookieValue("dollar") !== "0";
-		const _this = this;
-		
-
-		Events.addEventListener("LOG_IN", _this.showLogOutLinkDelegate);
-
-		// console.log(	);
-
-		if(isCookie) {
-			this._showLogOutLink(true);
-		}
-	}
-
-	_showLogOutLink = (condition: boolean) => {
-		this.setState({
-			isLoggedIn: condition
-		});
-	}
-
-	_logOut = () => {
-
-        fetch("/account/logout", { 
-            method: 'POST'
-            })
-            .then(res => res.json())
-            .then((obj) => {
-
-            	this._loggedOutHandler();
-
-            })
-			.catch(error => console.error(error));
-	}
-	
-	_loggedOutHandler = () => {
-		this.setState({
-			isLoggedIn: false
-		});
 	}
 
 	/*
 	 *  render DOM
 	 */
-	render() {
+	public render() {
 
 		let logoutLink;
+		let profileUrl = "/account";
+		const isCookie = Cookies.getCookieValue("dollar");
 
-		if (this.state.isLoggedIn) {
-			logoutLink = <Link className="mainMenuItem" to="/" onClick={this._logOut}>Logout</Link>;
+		if (this.state.isLoggedIn || isCookie !== "") {
+			logoutLink = <Link className="mainMenuItem" to="/" onClick={this.logOut}>Logout</Link>;
+			profileUrl = "/account/profile";
 		}
 	
 		return (
@@ -89,13 +54,35 @@ export default class Header extends React.Component implements IHeader {
 				</div>
 			
 				<div className="mainMenu">
-					<NavLink exact activeClassName="mainMenuItemActive" className="mainMenuItem" to="/">Home</NavLink>
-					<NavLink exact activeClassName="mainMenuItemActive" className="mainMenuItem" to="/shops">Shops</NavLink>
-					<NavLink exact activeClassName="mainMenuItemActive" className="mainMenuItem" to="/account">Account</NavLink>
+					<NavLink exact={true} activeClassName="mainMenuItemActive" className="mainMenuItem" to="/">Home</NavLink>
+					<NavLink exact={true} activeClassName="mainMenuItemActive" className="mainMenuItem" to="/shops">Shops</NavLink>
+					<NavLink exact={true} activeClassName="mainMenuItemActive" className="mainMenuItem" to={profileUrl}>Account</NavLink>
 					{logoutLink}
 				</div>
 
 			</header>
 		)
 	}
+
+	private showLogOutLink = (condition: boolean) => {
+		this.setState({
+			isLoggedIn: condition
+		});
+	}
+
+	private logOut = () => {
+
+        fetch("/account/logout", { 
+            method: 'POST'
+            })
+            .then(res => res.json())
+            .then((obj) => {
+
+            	this.showLogOutLink(false);
+
+            })
+			.catch(error => console.error(error));
+	}
+
+	
 }

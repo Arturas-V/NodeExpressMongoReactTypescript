@@ -1,21 +1,23 @@
 import * as React from "react";
 
 // Components
+import { BrowserRouter } from "react-router-dom";
+import Footer from "./scripts/Components/Footer";
 import Header from "./scripts/Components/Header";
 import Main from "./scripts/Components/Main";
-import Footer from "./scripts/Components/Footer";
-import { BrowserRouter } from "react-router-dom";
 
 
-//style imports
-import "./styles/Fonts.css";
-import "./styles/Config.css";
-import "./styles/Icons.css";
+
+// style imports
 import "./styles/App.css";
+import "./styles/Config.css";
+import "./styles/Fonts.css";
+import "./styles/Icons.css";
+
 
 export default class App extends React.Component {
 
-	render() {
+	public render() {
 		return(
             <React.Fragment>
                 <BrowserRouter>

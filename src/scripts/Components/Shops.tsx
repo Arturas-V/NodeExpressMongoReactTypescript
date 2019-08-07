@@ -4,7 +4,7 @@ import * as React from "react";
 
 
 export default class Shops extends React.Component {
-	render() {
+	public render() {
 	  return (
 		<div>
 		  <div>Shops</div>

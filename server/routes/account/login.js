@@ -47,9 +47,7 @@ router.post('/loginUser', function(req, res) {
             res.cookie("dollar", doc._id + "", 9999);            
 
             return res.status(200).json({
-                msg:'Logged in',
-                logggedIn: true,
-                token: doc._id
+                loggedIn: true
             });
         });
 

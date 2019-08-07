@@ -5,6 +5,10 @@ const AdSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
+    uri: {
+        type: String,
+        default: ""
+    },
     timestamp: {
         type: Date,
         default: Date.now

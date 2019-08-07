@@ -3,34 +3,21 @@ import AdsRenderer from "./Views/AdsRenderer";
 
 import "../../styles/Home/Home.css";
 
-type State = { adsData: Object }
-type Props = {}
+interface IState { adsData: object }
 
+export default class Home extends React.Component<{}, IState> {
 
-export default class Home extends React.Component<Props, State> {
-
-	state = {
+	public state = {
 		adsData: {}
 	}
 
-	constructor(props: Object){
+	constructor(props: object){
 		super(props);
 
-		this._loadLatestAds();
+		this.loadLatestAds();
 	}
 
-	_loadLatestAds = () => {
-		fetch("/ads/load", { method: 'GET' })
-		.then(res => res.json())
-		.then((obj) => {
-			this.setState({
-				adsData: obj.ads
-			});
-		})
-		.catch(error => console.error(error));
-	}
-
-	render() {
+	public render() {
 		
 			return (
 				<div className="homepageView">
@@ -39,5 +26,16 @@ export default class Home extends React.Component<Props, State> {
 				</div>
 			);
 
+	}
+
+	private loadLatestAds = () => {
+		fetch("/ads/load", { method: 'GET' })
+		.then(res => res.json())
+		.then((obj) => {
+			this.setState({
+				adsData: obj.ads
+			});
+		})
+		.catch(error => console.error(error));
 	}
 }

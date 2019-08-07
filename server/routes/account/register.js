@@ -1,7 +1,7 @@
-const User = require('../../models/User');
 const express = require("express");
 const router = express.Router();
-// const Utils = require('../../models/Utils');
+const User = require('../../models/User');
+const UserSession = require('../../models/UserSession');
 
 router.post('/registerUser', function(req, res) {
 
@@ -54,10 +54,25 @@ router.post('/registerUser', function(req, res) {
                 return res.status(500).json({msg: 'Error: Server error, try again later'});
             }
 
-            return res.status(200).json({
-                msg: 'Registered successfully!',
-                registered: true
+            const userSession = new UserSession();
+
+            userSession.userId = user._id;
+            userSession.save((err, doc) =>  {
+
+                if(err) {
+                    return res.status(500).json({msg: 'Error: Server error, try again later'});
+                }
+
+                // user session cookie nam dollar just for fun :)
+                res.cookie("dollar", doc._id + "", 9999);            
+
+                return res.status(200).json({
+                    msg: 'Registered successfully!',
+                    registered: true,
+                    token: doc._id
+                });
             });
+
         });
 
     });

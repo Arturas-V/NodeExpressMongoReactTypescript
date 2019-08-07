@@ -1,14 +1,14 @@
 import * as React from "react";
 
-type Props = { adData: Object }
+interface IProps { adData: object }
 
-export default class AdRenderer extends React.Component<Props> {
+export default class AdRenderer extends React.Component<IProps> {
 
-	props = {
+	public props = {
         adData: {
-            title: "",
+            description: "",
             price: "",
-            description: ""
+            title: ""
         }
     }
 
@@ -18,7 +18,7 @@ export default class AdRenderer extends React.Component<Props> {
         this.props = props;
     }
 
-	render() {
+	public render() {
 	  	return (
             <div className="listItem">
                 <h4 className="listItemTitle">{this.props.adData.title}</h4>

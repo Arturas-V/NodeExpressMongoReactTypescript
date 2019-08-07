@@ -3,11 +3,11 @@ import AdRenderer from "./AdRenderer";
 
 import "./../../../styles/Listing/List.css";
 
-type Props = { adsData: Object }
+interface IProps { adsData: object }
 
-export default class AdsRenderer extends React.Component<Props> {
+export default class AdsRenderer extends React.Component<IProps> {
 
-    props = {
+    public props = {
         adsData: {}
     }
 
@@ -17,7 +17,7 @@ export default class AdsRenderer extends React.Component<Props> {
         this.props = props;
     }
 
-	render() {
+	public render() {
 
         const ads: any = Object.values(this.props.adsData);
         const newAds = []; 

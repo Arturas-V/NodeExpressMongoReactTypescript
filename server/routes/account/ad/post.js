@@ -37,15 +37,20 @@ router.post('/post', function(req, res) {
 
         if(!session) {
             return res.status(200).json({
-                loggedIn: false
+                loggedIn: false,
+                msg: "you are not permitted to do this action, please login"
             });
         }
 
         if(session) {
 
             const newAd = new Ad();
+
+            const slug = title.replace(/[^a-zA-Z ]/g, "");
+            const uri = slug.replace(/ /g, "-").toLowerCase();
         
             newAd.title = title;
+            newAd.uri = uri;
             newAd.description = description;
             newAd.price = price;
             newAd.live = live;
