@@ -11,7 +11,7 @@ export default class Navigation extends React.Component {
 
         return (
             <div className="accountNavigation">
-                <NavLink exact={true} className="accountNavigation-Link" activeClassName="accountNavigation-Link_Active" to="/account/profile">My profile</NavLink>
+                <NavLink exact={true} className="accountNavigation-Link" activeClassName="accountNavigation-Link_Active" to="/account">My profile</NavLink>
                 <NavLink exact={true} className="accountNavigation-Link" activeClassName="accountNavigation-Link_Active" to="/account/my-ads">My ads</NavLink>
                 <NavLink exact={true} className="accountNavigation-Link" activeClassName="accountNavigation-Link_Active" to="/account/post-ad">Post ad</NavLink>
             </div>

@@ -2,9 +2,9 @@ import * as React from "react";
 
 // Components
 import { BrowserRouter } from "react-router-dom";
-import Footer from "./scripts/Components/Footer";
-import Header from "./scripts/Components/Header";
-import Main from "./scripts/Components/Main";
+import Footer from "./js/Components/Footer";
+import Header from "./js/Components/Header";
+import Main from "./js/Components/Main";
 
 
 

@@ -3,7 +3,10 @@
         "tslint:recommended", "tslint-react", "tslint-config-prettier"
     ],
     "rules": {
-        "no-console": false
+        "no-console": false,
+        "ordered-imports": false,
+        "object-literal-sort-keys": false,
+        "member-ordering": false
     },
     "linteroptions": {
         "exclude": [

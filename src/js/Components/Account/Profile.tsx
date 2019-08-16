@@ -1,6 +1,5 @@
 import * as React from "react";
-import Cookies from "../../Utils/Cookies";
-import Navigation from "./Components/Navigation";
+import AccountNavigation from "./Components/Navigation";
 
 interface IState {
     isLoggedIn: number,
@@ -26,7 +25,6 @@ export default class Profile extends React.Component<{}, IState> {
         }
     }
 
-    private cookie = "";
 
     /*
 	 *  constructor with fetch call to server to get user details
@@ -34,28 +32,40 @@ export default class Profile extends React.Component<{}, IState> {
 	constructor(props: any){
 		super(props);
         
-        this.cookie = Cookies.getCookieValue("dollar");
-		this.requestUserData();
+        this.requestUserData();
     }
+
+    private requestUserData = () => {
+
+		fetch("/account/getUser", { method: 'GET' })
+		.then(res => res.json())
+		.then((obj) => {
+
+			if( typeof obj.loggedIn !== "undefined" && obj.loggedIn ) {
+				this.setState({
+					isLoggedIn: 1,
+					userData: obj
+				});
+			} else {
+				
+				this.setState({
+					isLoggedIn: 2
+				});
+			}
+			
+		})
+		.catch(error => console.error(error));
+
+	}
     
     public render() {
-
-        if(this.cookie === "0" || this.cookie === "") {
-            return (
-                <div className="accountPage">
-
-                    <p>Nothing here</p>
-
-                </div>
-            )
-        }
 
         return (
             <div className="accountPage">
 
                 <h2>My Profile</h2>
 
-                <Navigation/>
+                <AccountNavigation/>
 
                 <div className="accountDetails">
 
@@ -86,26 +96,4 @@ export default class Profile extends React.Component<{}, IState> {
 
     }
 
-    private requestUserData = () => {
-
-		fetch("/account/getUser", { method: 'GET' })
-		.then(res => res.json())
-		.then((obj) => {
-
-			if( typeof obj.loggedIn !== "undefined" && obj.loggedIn ) {
-				this.setState({
-					isLoggedIn: 1,
-					userData: obj
-				});
-			} else {
-				
-				this.setState({
-					isLoggedIn: 2
-				});
-			}
-			
-		})
-		.catch(error => console.error(error));
-
-	}
 }
