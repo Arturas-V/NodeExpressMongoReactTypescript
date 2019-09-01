@@ -63,13 +63,14 @@ router.post('/registerUser', function(req, res) {
                     return res.status(500).json({msg: 'Error: Server error, try again later'});
                 }
 
-                // user session cookie nam dollar just for fun :)
+                // user session cookie name dollar just for fun :)
                 res.cookie("dollar", doc._id + "", 9999);            
 
                 return res.status(200).json({
-                    msg: 'Registered successfully!',
-                    registered: true,
-                    token: doc._id
+                    loggedIn: true,
+                    id: user._id,
+                    username: user.username,
+                    email: user.email
                 });
             });
 

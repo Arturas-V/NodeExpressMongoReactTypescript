@@ -1,62 +1,20 @@
 import * as React from "react";
 import AccountNavigation from "./Components/Navigation";
 
-interface IState {
-    isLoggedIn: number,
+import { connect } from "react-redux";
+// import { loggedOut, loggedIn } from "../../Redux/actions/userStateActions";
+
+interface IProps {
     userData: {
         email: string,
         id: string,
-        location: string,
+        username: string,
         name: string,
-        username: string
+        location: string
     }
 }
 
-export default class Profile extends React.Component<{}, IState> {
-
-    public state = {
-        isLoggedIn: 0,
-        userData: {
-            email: "",
-            id: "",
-            location: "",
-            name: "",
-            username: ""
-        }
-    }
-
-
-    /*
-	 *  constructor with fetch call to server to get user details
-	 */
-	constructor(props: any){
-		super(props);
-        
-        this.requestUserData();
-    }
-
-    private requestUserData = () => {
-
-		fetch("/account/getUser", { method: 'GET' })
-		.then(res => res.json())
-		.then((obj) => {
-
-			if( typeof obj.loggedIn !== "undefined" && obj.loggedIn ) {
-				this.setState({
-					isLoggedIn: 1,
-					userData: obj
-				});
-			} else {
-				
-				this.setState({
-					isLoggedIn: 2
-				});
-			}
-			
-		})
-		.catch(error => console.error(error));
-
-	}
+class Profile extends React.Component<IProps> {
     
     public render() {
 
@@ -72,20 +30,20 @@ export default class Profile extends React.Component<{}, IState> {
                     <h4>Your account details</h4>
 
                     <h5>Username:</h5>
-                    <p>{this.state.userData.username}</p>
+                    <p>{this.props.userData.username}</p>
 
                     <h5>Email:</h5>
-                    <p>{this.state.userData.email}</p>
+                    <p>{this.props.userData.email}</p>
 
                     <h5>Name:</h5>
-                    {this.state.userData.name ? 
-                        <p>{this.state.userData.name}</p>
+                    {this.props.userData.name ? 
+                        <p>{this.props.userData.name}</p>
                         : <input type="text" placeholder="enter your name" />
                     }
 
                     <h5>Location:</h5>
-                    {this.state.userData.location ? 
-                        <p>{this.state.userData.location}</p>
+                    {this.props.userData.location ? 
+                        <p>{this.props.userData.location}</p>
                         : <input type="text" placeholder="enter your location" />
                     }
 
@@ -97,3 +55,11 @@ export default class Profile extends React.Component<{}, IState> {
     }
 
 }
+
+// map redux state to component properties 
+// so that component can be updated upon redux state update
+const mapStateToProps = (state: any) => ({
+	userData: state.userState.userData
+});
+
+export default connect( mapStateToProps, {  } )( Profile );

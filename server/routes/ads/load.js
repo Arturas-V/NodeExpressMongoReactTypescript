@@ -19,19 +19,32 @@ router.get('/load', function(req, res) {
         }
 
         dbQueryParams = { owner: req.query.owner };
-        const _id = mongoose.Types.ObjectId(req.query.owner);
 
-        UserSession.findOne({ _id: _id }).exec( (err, usr ) => {
-            if(err) {
-                dbQueryParams = { live: true };
-            }
+        try {
+                
+            const _id = mongoose.Types.ObjectId(req.query.owner);
 
-            if(usr) {
-                dbQueryParams =  { owner: usr.userId };
-            }
+            UserSession.findOne({ _id: _id }).exec( (err, usr ) => {
+                if(err) {
+                    dbQueryParams = { live: true };
+                }
 
-            return queryAds(dbQueryParams);
-        });
+                if(usr) {
+                    dbQueryParams =  { owner: usr.userId };
+                }
+
+                return queryAds(dbQueryParams);
+            });
+
+        } catch (e) {
+            // this means somebdy was trying to fuck up with cookie
+            // by changing cookie value to not 24 hex chacaters, hence fuck off
+    
+            res.cookie('dollar', "0", { maxAge: 900000, httpOnly: true });
+            res.status(200).json({
+                loggedIn: false
+            });
+        }
 
     } else {
         dbQueryParams = { live: true };

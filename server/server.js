@@ -19,6 +19,7 @@ const postAdRoute = require('./routes/account/ad/post');
 const deleteAdRoute = require('./routes/account/ad/delete');
 // const updateAdRoute = require('./routes/account/ad/update');
 const loadAdsRoute = require('./routes/ads/load');
+const loadMyAdsRoute = require('./routes/ads/myads');
 app.use(cookieParser());
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -31,17 +32,8 @@ mongoose.connect('mongodb://localhost:27017/weezadb', {useNewUrlParser: true})
 
 // sub routes
 app.use('/account', [registerRoute, loginRoute, getUserRoute, logoutRoute]);
-app.use('/ads', [loadAdsRoute]);
+app.use('/ads', [loadAdsRoute, loadMyAdsRoute]);
 app.use('/ad', [postAdRoute, deleteAdRoute]);
-
-app.get('/links', function (req, res) {
-    console.log("boo");
-    res.render('file.ejs', {title:'Hello', value:'world!'} );
-    // res.render('index', function (err, html) {
-    //     console.log("booss");
-    //     res.send(html)
-    //   })
-  })
 
 app.listen(3001, function () {
     console.log('Example app listening on port 3001!');

@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { connect } from "react-redux";
-import { login } from "../../Redux/actions/userStateActions";
+import { loggedIn } from "../../Redux/actions/userStateActions";
 
 // style imports
 import "./../../../styles/Account/LoginRegister.css"
@@ -13,7 +13,7 @@ interface IState {
 }
 
 interface IProps {
-    login: () => void
+    loggedIn: (obj: object) => void
 }
 
 class LoginRegister extends React.Component<IProps, IState> {
@@ -40,8 +40,8 @@ class LoginRegister extends React.Component<IProps, IState> {
             .then(res => res.json())
             .then((obj) => {
 
-                if( (typeof obj.loggedIn !== "undefined" && obj.loggedIn) || (typeof obj.registered !== "undefined" && obj.registered) ) {
-                    return this.props.login();
+                if( typeof obj.loggedIn !== "undefined" && obj.loggedIn ) {
+                    return this.props.loggedIn(obj);
                 }
                 
                 this.showNotification(obj.msg);
@@ -201,4 +201,4 @@ class LoginRegister extends React.Component<IProps, IState> {
 
 }
 
-export default connect( null, { login } )( LoginRegister );
+export default connect( null, { loggedIn } )( LoginRegister );

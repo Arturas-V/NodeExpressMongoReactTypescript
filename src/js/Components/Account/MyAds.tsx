@@ -1,31 +1,73 @@
 import * as React from "react";
-import Cookies from "../../Utils/Cookies";
 import Navigation from "./Components/Navigation";
 import AdRenderer from "./Views/AdRenderer";
 
+import { connect } from "react-redux";
+
 import "../../../styles/Listing/List.css";
 
-interface IState { adsData: object }
+interface IState { 
+    adsData: object
+}
 
-export default class MyAds extends React.Component<{}, IState> {
+interface IProps {
+    userData: {
+        id: ""
+    }
+}
 
-	public state = {
-		adsData: {}
+class MyAds extends React.Component<IProps, IState> {
+
+	public state: IState = {
+        adsData: {}
+    }    
+
+    public props: IProps = {
+        userData: {
+            id: ""
+        }
     }
     
-    private cookie = "";
+    private loadLatestAds = () => {
+        console.log("BBB ", this.props.userData);
 
-	constructor(props: object){
-		super(props);
+        if( this.props.userData.id === "" ) {
+            return;
+        }
 
-        this.cookie = Cookies.getCookieValue("dollar");
+		return fetch("/ads/load?owner=" + this.props.userData.id, { method: 'GET' })
+		.then(res => res.json())
+		.then((obj) => {
+			this.setState({
+				adsData: obj.ads
+			});
+		})
+		.catch(error => console.error(error));
+    }
+    
+    public componentDidMount = () => {
         this.loadLatestAds();
+    }
+
+    public componentDidUpdate = () => {
+        console.log("UPDATE ", this.state.adsData);
+
+        const ads: any = Object.values(this.state.adsData);
         
-	}
+        if( ads.length > 0 ) {
+            return;
+        }
+        this.loadLatestAds();
+    }
 
     public render() {
 
-        if(this.cookie === "0" || this.cookie === "") {
+        const ads: any = Object.values(this.state.adsData);
+        const newAds = [];
+
+        console.log("AAA ", this.state.adsData);
+
+        if ( ads.length > 0 ) {
             return (
                 <div className="accountPage">
 
@@ -34,9 +76,6 @@ export default class MyAds extends React.Component<{}, IState> {
                 </div>
             )
         }
-
-        const ads: any = Object.values(this.state.adsData);
-        const newAds = [];
         
         for (let i=0; i<ads.length; i++){
             newAds.push(<AdRenderer key={i} adData={ads[i]} />);
@@ -57,16 +96,12 @@ export default class MyAds extends React.Component<{}, IState> {
         )
     }
 
-    private loadLatestAds = () => {
-
-		fetch("/ads/load?owner=" + this.cookie, { method: 'GET' })
-		.then(res => res.json())
-		.then((obj) => {
-			this.setState({
-				adsData: obj.ads
-			});
-		})
-		.catch(error => console.error(error));
-	}
-
 }
+
+// map redux state to component properties 
+// so that component can be updated upon redux state update
+const mapStateToProps = (state: any) => ({
+	userData: state.userState.userData
+});
+
+export default connect( mapStateToProps, { } )(MyAds);

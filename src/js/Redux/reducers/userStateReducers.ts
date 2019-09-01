@@ -1,8 +1,12 @@
-import { LOGIN, LOGOUT } from "../actions/types";
+import { LOGIN, LOGOUT, LOGGEDOUT, LOGGEDIN } from "../actions/types";
 
-const initialState = {
+const initialState = {	
 	loggedIn: false,
-	authenticated: false
+	userData: {
+        email: "",
+        id: "",
+        username: ""
+    }
 }
 
 export default function(state = initialState, action: any) {
@@ -19,6 +23,23 @@ export default function(state = initialState, action: any) {
 			return {
 				...state,
 				loggedIn: action.payload
+			}
+
+		case LOGGEDOUT:
+			return {
+				...state,
+				loggedIn: action.payload
+			}
+
+		case LOGGEDIN:
+			return {
+				...state,
+				loggedIn: action.payload.loggedIn,
+				userData: {
+					email: action.payload.email,
+					id: action.payload.id,
+					username: action.payload.username
+				}
 			}
 
 		default:

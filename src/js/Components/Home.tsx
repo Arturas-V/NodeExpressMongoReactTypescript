@@ -19,12 +19,12 @@ export default class Home extends React.Component<{}, IState> {
 
 	public render() {
 		
-			return (
-				<div className="homepageView">
-					<h4 className="homepageViewTitle">Latest ads</h4>
-					<AdsRenderer adsData={this.state.adsData} />
-				</div>
-			);
+		return (
+			<div className="homepageView">
+				<h4 className="homepageViewTitle">Latest ads</h4>
+				<AdsRenderer adsData={this.state.adsData} />
+			</div>
+		);
 
 	}
 

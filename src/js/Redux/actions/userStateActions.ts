@@ -1,6 +1,6 @@
-import { LOGIN, LOGOUT } from "./types";
+import { LOGIN, LOGOUT, LOGGEDOUT, LOGGEDIN } from "./types";
 
-export const login = () => (dispatch: any) => {
+export const login = (obj? : object) => (dispatch: any) => {
 	dispatch({
 		type: LOGIN,
 		payload: true
@@ -22,3 +22,17 @@ export const logout = () => (dispatch: any) => {
 		.catch(error => console.error(error));
 
 }
+
+export const loggedIn = (obj: object) => (dispatch: any) => {
+	dispatch({
+		type: LOGGEDIN,
+		payload: obj
+	});
+}
+
+export const loggedOut = () => (dispatch: any) => {
+	dispatch({
+		type: LOGGEDOUT,
+		payload: false
+	});
+}	

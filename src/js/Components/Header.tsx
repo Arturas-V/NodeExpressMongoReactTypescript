@@ -1,9 +1,8 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import Cookies from "../Utils/Cookies";
 
 import { connect } from "react-redux";
-import { login, logout } from "../Redux/actions/userStateActions";
+import { logout } from "../Redux/actions/userStateActions";
 
 // style statics
 import logo from "../../images/beeza.png";
@@ -11,7 +10,6 @@ import "../../styles/Header.css";
 
 interface IProps {
 	logout: () => void,
-	login: () => void,
 	userState: {
 		loggedIn: boolean
 	}
@@ -23,12 +21,9 @@ class Header extends React.Component<IProps> {
 	 *  render DOM
 	 */
 	public render() {
-
-		const isCookie = Cookies.getCookieValue("dollar");
-
 		let logoutLink = null;
 		
-		if ( this.props.userState.loggedIn || (isCookie && isCookie !== "0") ) {
+		if ( this.props.userState.loggedIn ) {
 			logoutLink = <Link className="mainMenuItem" to="/" onClick={this.props.logout}>Logout</Link>;
 		}
 	
@@ -60,4 +55,4 @@ const mapStateToProps = (state: any) => ({
 	userState: state.userState
 });
 
-export default connect( mapStateToProps, { login, logout } )(Header);
+export default connect( mapStateToProps, { logout } )(Header);
